@@ -9,7 +9,10 @@ from sora_sdk import Sora
 
 
 class SendOnly:
-    def __init__(self, signaling_url, channel_id, metadata, camera_id, audio_codec_type, video_codec_type,
+    def __init__(self, signaling_url, channel_id, metadata, video_bit_rate, audio_bit_rate,
+                 simulcast, simulcast_rid,
+                 spotlight, spotlight_number, spotlight_focus_rid, spotlight_unfocus_rid,
+                 camera_id,audio_codec_type, video_codec_type,
                  video_width, video_height, channels=1, samplerate=16000):
         self.running = True
         self.channels = channels
@@ -24,10 +27,18 @@ class SendOnly:
             role="sendonly",
             channel_id=channel_id,
             metadata=metadata,
+            video_bit_rate=video_bit_rate,
+            audio_bit_rate=audio_bit_rate,
+            simulcast=simulcast,
+            simulcast_rid=simulcast_rid,
+            spotlight=spotlight,
+            spotlight_number=spotlight_number,
+            spotlight_focus_rid=spotlight_focus_rid,
+            spotlight_unfocus_rid=spotlight_unfocus_rid,
             audio_codec_type=audio_codec_type,
             video_codec_type=video_codec_type,
             audio_source=self.audio_source,
-            video_source=self.video_source
+            video_source=self.video_source,
         )
         self.connection.on_disconnect = self.on_disconnect
 
@@ -81,6 +92,22 @@ if __name__ == '__main__':
         '--video-codec-type', default=os.getenv('SORA_VIDEO_CODEC_TYPE'), help="映像コーデックの種類")
     parser.add_argument(
         "--metadata", default=os.getenv("SORA_METADATA"), help="メタデータ JSON")
+    parser.add_argument(
+        "--video-bit-rate", type=int, default=os.getenv("SORA_VIDEO_BIT_RATE"), help="映像ビットレート")
+    parser.add_argument(
+        "--audio-bit-rate", type=int, default=os.getenv("SORA_AUDIO_BIT_RATE"), help="音声ビットレート")
+    parser.add_argument(
+        "--simulcast", type=bool, default=os.getenv("SORA_SIMULCAST"), help="Simulcast を有効にする")
+    parser.add_argument(
+        "--simulcast-rid", default=os.getenv("SORA_SIMULCAST_RID"), help="Simulcast RID")
+    parser.add_argument(
+        "--spotlight", type=bool, default=os.getenv("SORA_SPOTLIGHT"), help="Spotlight を有効にする")
+    parser.add_argument(
+        "--spotlight-number", type=int, default=os.getenv("SORA_SPOTLIGHT_NUMBER"), help="Spotlight の数")
+    parser.add_argument(
+        "--spotlight-focus-rid", default=os.getenv("SORA_SPOTLIGHT_FOCUS_RID"), help="Spotlight Focus RID")
+    parser.add_argument(
+        "--spotlight-unfocus-rid", default=os.getenv("SORA_SPOTLIGHT_UNFOCUS_RID"), help="Spotlight Unfocus RID")
     parser.add_argument("--camera-id", type=int, default=int(
         os.getenv("SORA_CAMERA_ID", "0")), help="cv2.VideoCapture() に渡すカメラ ID")
     parser.add_argument("--video-width", type=int, default=os.getenv("SORA_VIDEO_WIDTH"),
@@ -94,6 +121,10 @@ if __name__ == '__main__':
         metadata = json.loads(args.metadata)
 
     sendonly = SendOnly(args.signaling_url, args.channel_id,
-                        metadata, args.camera_id, args.audio_codec_type, args.video_codec_type,
+                        metadata, args.video_bit_rate, args.audio_bit_rate,
+                        args.simulcast, args.simulcast_rid,
+                        args.spotlight, args.spotlight_number,
+                        args.spotlight_focus_rid, args.spotlight_unfocus_rid,
+                        args.camera_id, args.audio_codec_type, args.video_codec_type,
                         args.video_width, args.video_height)
     sendonly.run()
