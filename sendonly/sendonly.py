@@ -12,7 +12,7 @@ class SendOnly:
     def __init__(self, signaling_url, channel_id, metadata, video_bit_rate, audio_bit_rate,
                  simulcast, simulcast_rid,
                  spotlight, spotlight_number, spotlight_focus_rid, spotlight_unfocus_rid,
-                 camera_id,audio_codec_type, video_codec_type,
+                 camera_id, audio_codec_type, video_codec_type,
                  video_width, video_height, channels=1, samplerate=16000):
         self.running = True
         self.channels = channels
