@@ -4,7 +4,6 @@ import os
 
 import cv2
 import sounddevice
-
 from sora_sdk import Sora
 
 
@@ -37,6 +36,7 @@ class SendOnly:
             spotlight_unfocus_rid=spotlight_unfocus_rid,
             audio_codec_type=audio_codec_type,
             video_codec_type=video_codec_type,
+            video_bit_rate=video_bit_rate,
             audio_source=self.audio_source,
             video_source=self.video_source,
         )
@@ -87,9 +87,11 @@ if __name__ == '__main__':
 
     # オプション引数
     parser.add_argument(
-        '--audio-codec-type', default=os.getenv('SORA_AUDIO_CODEC_TYPE'), help="音声コーデックの種類")
+        '--audio-codec-type', default=os.getenv('SORA_AUDIO_CODEC_TYPE'),help="音声コーデックの種類")
     parser.add_argument(
         '--video-codec-type', default=os.getenv('SORA_VIDEO_CODEC_TYPE'), help="映像コーデックの種類")
+    parser.add_argument(
+        '--video-bit-rate', type=int, default=int(os.getenv('SORA_VIDEO_BIT_RATE', "500")), help="映像ビットレート")
     parser.add_argument(
         "--metadata", default=os.getenv("SORA_METADATA"), help="メタデータ JSON")
     parser.add_argument(
