@@ -36,7 +36,6 @@ class SendOnly:
             spotlight_unfocus_rid=spotlight_unfocus_rid,
             audio_codec_type=audio_codec_type,
             video_codec_type=video_codec_type,
-            video_bit_rate=video_bit_rate,
             audio_source=self.audio_source,
             video_source=self.video_source,
         )
@@ -93,11 +92,9 @@ if __name__ == '__main__':
     parser.add_argument(
         '--video-bit-rate', type=int, default=int(os.getenv('SORA_VIDEO_BIT_RATE', "500")), help="映像ビットレート")
     parser.add_argument(
-        "--metadata", default=os.getenv("SORA_METADATA"), help="メタデータ JSON")
-    parser.add_argument(
-        "--video-bit-rate", type=int, default=os.getenv("SORA_VIDEO_BIT_RATE"), help="映像ビットレート")
-    parser.add_argument(
         "--audio-bit-rate", type=int, default=os.getenv("SORA_AUDIO_BIT_RATE"), help="音声ビットレート")
+    parser.add_argument(
+        "--metadata", default=os.getenv("SORA_METADATA"), help="メタデータ JSON")
     parser.add_argument(
         "--simulcast", type=bool, default=os.getenv("SORA_SIMULCAST"), help="Simulcast を有効にする")
     parser.add_argument(
